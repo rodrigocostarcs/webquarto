@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\ImovelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware(['auth'])->group(function(){
 
+    Route::post('imoveis/store',[ImovelController::class,'store'])->name('imovel.store');
+    Route::get('/imoveis',[ImovelController::class,'index'])->name('imovel.index');
+    Route::get('/imoveis/create',[ImovelController::class,'create'])->name('imovel.create');
+
+});
 Route::get('/', function () {
     return view('welcome');
 });
