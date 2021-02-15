@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateImovelRequest;
 use Illuminate\Http\Request;
 use App\Models\Admin\Imovel;
+use Illuminate\Support\Str;
 
 class ImovelController extends Controller
 {
@@ -27,7 +28,19 @@ class ImovelController extends Controller
 
     public function store(StoreUpdateImovelRequest $request)
     {
-        $imovel = Imovel::create($request->all());
+       $data = $request->all();
+
+       if( $request->file('foto')->isValid()){
+
+
+            $nameFile = Str::of($request->titulo)
+                    ->slug('-').date('Hms').'.'.$request->file('foto')->getClientOriginalExtension();
+
+            $foto = $request->file('foto')->storeAs('imoveis',$nameFile);
+            $data['foto'] = $foto;
+       }
+
+        $imovel = Imovel::create($data);
 
         if ($imovel)
             return redirect()->route('imovel.index')->with('message', 'Imóvel cadastrado com sucesso!');

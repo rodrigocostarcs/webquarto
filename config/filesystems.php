@@ -34,7 +34,7 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
-
+        //php artisan storage:link  - cria um link simbólico em public
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

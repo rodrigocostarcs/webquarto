@@ -34,7 +34,7 @@ class StoreUpdateImovelRequest extends FormRequest
             'valor' => ['required','regex:/^\d+(\.\d{1,2})?$/'],
             'status' => [
                 Rule::in(['d','a'])],
-            'foto' => 'min:3|max:100'
+            'foto' => ['required','image']
         ];
     }
 }

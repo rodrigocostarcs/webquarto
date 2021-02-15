@@ -44,7 +44,8 @@
     <div class="row">
         @foreach($imoveis as $imovel)
         <div class="card col-4" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="sem foto">
+            <img src="{{url("storage/{$imovel->foto}")}}" class="card-img-top" alt="{{$imovel->titulo}}"
+            style="max-width: 300px;">
             <div class="card-body">
                 <h5 class="card-title">{{$imovel->titulo}}</h5>
                 <p class="card-text">
