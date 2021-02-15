@@ -14,10 +14,10 @@ class ImovelController extends Controller
 
     public function index()
     {
-      /*orderBy ou latest()*/
-       $imoveis = Imovel::latest()->paginate($this->totalPage);
+        /*orderBy ou latest()*/
+        $imoveis = Imovel::latest()->paginate($this->totalPage);
 
-       return view('admin.imovel.index',compact('imoveis'));
+        return view('admin.imovel.index', compact('imoveis'));
     }
 
     public function create()
@@ -29,8 +29,8 @@ class ImovelController extends Controller
     {
         $imovel = Imovel::create($request->all());
 
-        if($imovel)
-            return redirect()->route('imovel.index')->with('message','Imóvel cadastrado com sucesso!');
+        if ($imovel)
+            return redirect()->route('imovel.index')->with('message', 'Imóvel cadastrado com sucesso!');
         else
             return back()->withInput();
     }
@@ -39,31 +39,31 @@ class ImovelController extends Controller
     {
         $imovel = Imovel::find($id);
 
-        if(!$imovel){
+        if (!$imovel) {
 
             return redirect()->route('imovel.index');
         }
 
-        return view('admin.imovel.show',compact('imovel'));
+        return view('admin.imovel.show', compact('imovel'));
     }
 
     public function edit($id)
     {
         $imovel = Imovel::find($id);
 
-        if(!$imovel){
+        if (!$imovel) {
 
             return redirect()->route('imovel.index');
         }
 
-        return view('admin.imovel.edit',compact('imovel'));
+        return view('admin.imovel.edit', compact('imovel'));
     }
 
     public function update(StoreUpdateImovelRequest $request, $id)
     {
         $imovel = Imovel::find($id);
 
-        if(!$imovel){
+        if (!$imovel) {
 
             return back()->withInput();
         }
@@ -71,25 +71,25 @@ class ImovelController extends Controller
         $imovel->update($request->all());
 
         return redirect()
-               ->route('imovel.index')
-               ->with('message','Imóvel atualizado com sucesso!');
+            ->route('imovel.index')
+            ->with('message', 'Imóvel atualizado com sucesso!');
     }
 
     public function destroy($id)
     {
         $imovel = Imovel::find($id);
 
-        if(!$imovel){
+        if (!$imovel) {
 
             return back();
         }
 
         $delete = $imovel->delete();
 
-        if($delete)
+        if ($delete)
             return redirect()
-                  ->route('imovel.index')
-                  ->with('message','Imóvel deletado com sucesso!');
+                ->route('imovel.index')
+                ->with('message', 'Imóvel deletado com sucesso!');
         else
             return back();
     }
@@ -98,12 +98,11 @@ class ImovelController extends Controller
     {
         $filtro = $request->except('_token');
 
-        $imoveis = Imovel::where('titulo','LIKE',"%{$request->search}%")
-                        ->paginate($this->totalPage);
-                        //toSql();
-                        //dd($imoveis);
+        $imoveis = Imovel::where('titulo', 'LIKE', "%{$request->search}%")
+            ->paginate($this->totalPage);
+        //toSql();
+        //dd($imoveis);
 
-        return view('admin.imovel.index',compact('imoveis','filtro'));
-
+        return view('admin.imovel.index', compact('imoveis', 'filtro'));
     }
 }
