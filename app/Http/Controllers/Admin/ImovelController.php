@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateImovelRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Admin\Imovel;
 use Illuminate\Support\Str;
 
@@ -81,7 +82,21 @@ class ImovelController extends Controller
             return back()->withInput();
         }
 
-        $imovel->update($request->all());
+        $data = $request->all();
+
+        if($request->file('foto') && $request->file('foto')->isValid()){
+
+             if(Storage::exists($imovel->foto))
+                    Storage::delete($imovel->foto);
+
+             $nameFile = Str::of($request->titulo)
+                     ->slug('-').date('Hms').'.'.$request->file('foto')->getClientOriginalExtension();
+
+             $foto = $request->file('foto')->storeAs('imoveis',$nameFile);
+             $data['foto'] = $foto;
+        }
+
+        $imovel->update($data);
 
         return redirect()
             ->route('imovel.index')
@@ -96,6 +111,9 @@ class ImovelController extends Controller
 
             return back();
         }
+
+        if(Storage::exists($imovel->foto))
+            Storage::delete($imovel->foto);
 
         $delete = $imovel->delete();
 

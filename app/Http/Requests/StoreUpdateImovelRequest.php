@@ -24,7 +24,13 @@ class StoreUpdateImovelRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        //$id = $this->segment(2);
+        $rules = [
+             /*
+            'titulo' => ['required','min:3','max:160','unique:imoveis,titulo,{$id},id'] or
+            Rule::unique('imoveis')->ignore($id);
+            */
+
             'titulo' => 'required|min:3|max:160',
             'descricao' => ['required','min:5','max:10000'],
             'endereco' => 'required|min:3|max:160',
@@ -36,5 +42,11 @@ class StoreUpdateImovelRequest extends FormRequest
                 Rule::in(['d','a'])],
             'foto' => ['required','image']
         ];
+
+        if($this->method() == 'PUT'){
+            $rules['foto'] = ['nullable','image'];
+        }
+
+        return $rules;
     }
 }
