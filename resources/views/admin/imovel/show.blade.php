@@ -23,10 +23,10 @@
             <a class="nav-link active" aria-current="page" href="/dashboard">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{{route('imovel.create')}}">Cadastrar novo Imóvel</a>
+            <a class="nav-link" href="{{route('imovel.index')}}">visualizar imóveis</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>
         </ul>
         <form class="d-flex">
@@ -37,35 +37,37 @@
     </div>
     </nav>
 
-    <h1>Imóveis cadastrados na plataforma!</h1>
+    <div class="jumbotron">
+        <h1 class="display-4">{{$imovel->titulo}}</h1>
+        <p class="lead">
+            Endereço: {{$imovel->endereco}} <br/>
+            Cidade: {{$imovel->cidade}} <br/>
+            Estado: {{$imovel->estado}} <br/>
+            CEP: {{$imovel->cep}}<br/>
+            Valor do Aluguel: {{$imovel->valor}}<br/>
+            Status: {{ ($imovel->status == 'd') ? 'disponível' : 'Alugado'}}
+        </p>
+        <hr class="my-4">
+        <p>
+            {{$imovel->descricao}}
+        </p>
+        <p class="lead">
+            <div class="container">
+                <div class="row">
+                <div class="col-6">
+                    <a class="btn btn-primary btn-lg" href="#" role="button">Editar</a>
+                </div>
+                    <div class="col-6">
+                        <form action="{{route('imovel.destroy',$imovel->id)}}" method="post" >
 
-    @if(session('message'))
-        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-            <div class="card-header">Sucesso!</div>
-             <div class="card-body">
-                <h5 class="card-title">Lista de imóveis atualizada.</h5>
-                    <p class="card-text">{{session('message')}}</p>
-             </div>
+                        @csrf
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" class="btn btn-danger btn-lg" value="Excluir">
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-    @endif
-
-    <div class="container">
-        <div class="row">
-        @foreach($imoveis as $imovel)
-            <div class="card col-4" style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="sem foto">
-            <div class="card-body">
-                <h5 class="card-title">{{$imovel->titulo}}</h5>
-                <p class="card-text">
-                {{substr($imovel->descricao, 0, 120)}} (...)
-                </p>
-                <a href="{{route('imovel.show',['id'=> $imovel->id])}}" class="btn btn-primary">Saiba mais</a>
-            </div>
-
-            </div>
-            @endforeach
-        </div>
+        </p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

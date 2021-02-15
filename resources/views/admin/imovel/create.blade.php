@@ -37,41 +37,63 @@
     </div>
     </nav>
 
+    <!--Retorno da validação-->
+    @if($errors->any())
+        <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+            <div class="card-header">Atenção!</div>
+                <div class="card-body">
+                    <h5 class="card-title">Corrija os campos abaixo!</h5>
+                    @foreach($errors->all() as $error)
+                        <p class="card-text">{{$error}}</p>
+                    @endforeach
+
+                </div>
+            </div>
+        </div>
+    @endif
+
     <form action="{{route('imovel.store')}}" method="POST">
     @csrf
     <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Título</label>
-        <input type="text" class="form-control" name="titulo" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <input type="text" class="form-control" name="titulo" id="exampleInputEmail1" aria-describedby="emailHelp"
+        value="{{old('titulo')}}">
         <div id="emailHelp" class="form-text">Digite o título para o ímovel.</div>
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Digite o endereço</label>
-        <input type="text" class="form-control" name="endereco" id="exampleInputPassword1">
+        <input type="text" class="form-control" name="endereco" id="exampleInputPassword1"
+        value="{{old('endereco')}}">
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Digite a cidade</label>
-        <input type="text" class="form-control" name="cidade" id="exampleInputPassword1">
+        <input type="text" class="form-control" name="cidade" id="exampleInputPassword1"
+        value="{{old('cidade')}}">
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Digite o estado</label>
-        <input type="text" class="form-control" name="estado" id="exampleInputPassword1">
+        <input type="text" class="form-control" name="estado" id="exampleInputPassword1"
+        value="{{old('estado')}}">
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Digite o CEP</label>
-        <input type="text" class="form-control" name="cep" id="exampleInputPassword1">
+        <input type="text" class="form-control" name="cep" id="exampleInputPassword1"
+        value="{{old('cep')}}">
     </div>
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Digite o valor</label>
-        <input type="text" class="form-control" name="valor" id="exampleInputPassword1">
+        <input type="text" class="form-control" name="valor" id="exampleInputPassword1"
+        value="{{old('valor')}}">
     </div>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Descrição</label>
-        <textarea class="form-control" name="descricao" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <textarea class="form-control" name="descricao" id="exampleFormControlTextarea1" rows="3">{{old('descricao')}}</textarea>
     </div>
 
     <div class="custom-file">
     <label for="exampleFormControlTextarea1">Escolha uma foto</label>
-    <input type="file" name="foto" class="custom-file-input" id="validatedCustomFile" required>
+    <input type="file" name="foto" class="custom-file-input" id="validatedCustomFile"
+    value="{{old('foto')}}">
   </div>
 
     <button type="submit" class="btn btn-primary">cadastrar</button>
