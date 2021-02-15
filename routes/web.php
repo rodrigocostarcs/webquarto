@@ -14,12 +14,13 @@ use App\Http\Controllers\Admin\ImovelController;
 */
 Route::middleware(['auth'])->group(function(){
 
+    Route::put('/imoveis/{id}',[ImovelController::class,'update'])->name('imovel.update');
     Route::get('/imoveis/create',[ImovelController::class,'create'])->name('imovel.create');
+    Route::get('/imoveis/editar/{id}',[ImovelController::class,'edit'])->name('imovel.edit');
     Route::delete('/imoveis/{id}',[ImovelController::class,'destroy'])->name('imovel.destroy');
     Route::get('/imoveis/{id}',[ImovelController::class,'show'])->name('imovel.show');
     Route::post('/imoveis/store',[ImovelController::class,'store'])->name('imovel.store');
     Route::get('/imoveis',[ImovelController::class,'index'])->name('imovel.index');
-
 
 });
 

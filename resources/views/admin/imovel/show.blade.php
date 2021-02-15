@@ -29,10 +29,6 @@
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>
         </ul>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="pesquisar..." aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">pesquisar</button>
-        </form>
         </div>
     </div>
     </nav>
@@ -55,13 +51,13 @@
             <div class="container">
                 <div class="row">
                 <div class="col-6">
-                    <a class="btn btn-primary btn-lg" href="#" role="button">Editar</a>
+                    <a class="btn btn-primary btn-lg" href="{{route('imovel.edit',$imovel->id)}}" role="button">Editar</a>
                 </div>
                     <div class="col-6">
                         <form action="{{route('imovel.destroy',$imovel->id)}}" method="post" >
 
                         @csrf
-                        <input type="hidden" name="_method" value="DELETE">
+                        @method('DELETE')
                         <input type="submit" class="btn btn-danger btn-lg" value="Excluir">
                         </form>
                     </div>
