@@ -12,6 +12,10 @@ use App\Http\Controllers\Admin\ImovelController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+//composer require laravel/breeze --dev para instalar o package de autenticação.
+//php artisan breeze:install para ativar a autenticação
+//npm install && npm run dev
 Route::middleware(['auth'])->group(function(){
 
     Route::any('/imoveis/pesquisar',[ImovelController::class,'search'])->name('imovel.search');

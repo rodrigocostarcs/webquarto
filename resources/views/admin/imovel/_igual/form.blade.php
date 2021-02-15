@@ -27,7 +27,7 @@
         <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
             <div class="card-header">Atenção!</div>
                 <div class="card-body">
-                    <h5 class="card-title">Corrija os campos abaixo!</h5>
+                    <h5 class="card-title">É necessário corrigir os campos abaixo!</h5>
                     @foreach($errors->all() as $error)
                         <p class="card-text">{{$error}}</p>
                     @endforeach
