@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ImovelController;
 */
 Route::middleware(['auth'])->group(function(){
 
+    Route::any('/imoveis/pesquisar',[ImovelController::class,'search'])->name('imovel.search');
     Route::put('/imoveis/{id}',[ImovelController::class,'update'])->name('imovel.update');
     Route::get('/imoveis/create',[ImovelController::class,'create'])->name('imovel.create');
     Route::get('/imoveis/editar/{id}',[ImovelController::class,'edit'])->name('imovel.edit');

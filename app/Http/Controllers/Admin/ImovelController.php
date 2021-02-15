@@ -10,7 +10,7 @@ use App\Models\Admin\Imovel;
 class ImovelController extends Controller
 {
 
-    protected $totalPage = 6;
+    protected $totalPage = 1;
 
     public function index()
     {
@@ -92,5 +92,18 @@ class ImovelController extends Controller
                   ->with('message','Imóvel deletado com sucesso!');
         else
             return back();
+    }
+
+    public function search(Request $request)
+    {
+        $filtro = $request->except('_token');
+
+        $imoveis = Imovel::where('titulo','LIKE',"%{$request->search}%")
+                        ->paginate($this->totalPage);
+                        //toSql();
+                        //dd($imoveis);
+
+        return view('admin.imovel.index',compact('imoveis','filtro'));
+
     }
 }

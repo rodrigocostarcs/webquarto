@@ -29,8 +29,9 @@
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
             </li>
         </ul>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="pesquisar..." aria-label="Search">
+        <form action="{{route('imovel.search')}}" class="d-flex" method="post">
+            @csrf
+            <input class="form-control me-2" type="search" name="search" placeholder="pesquisar..." aria-label="Search">
             <button class="btn btn-outline-success" type="submit">pesquisar</button>
         </form>
         </div>
@@ -68,8 +69,11 @@
         </div>
 
         <hr>
-
-        {{$imoveis->links()}}
+        @if(isset($filtro))
+            {{$imoveis->appends($filtro)->links()}}
+        @else
+             {{$imoveis->links()}}
+        @endif
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
