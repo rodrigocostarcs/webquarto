@@ -9,12 +9,12 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                <a class="nav-link" href="{{route('home')}}">site</a>
                 </li>
             </ul>
-            <form action="{{route('imovel.search')}}" class="d-flex" method="post">
+            <form action="{{route('localizar.search')}}" class="d-flex" method="post">
                 @csrf
-                <input class="form-control me-2" type="search" name="search" placeholder="pesquisar..." aria-label="Search">
+                <input class="form-control me-2" type="search" name="search" placeholder="pesquise por cidades" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">pesquisar</button>
             </form>
         </div>
@@ -45,7 +45,7 @@
                 <p class="card-text">
                     {{substr($imovel->descricao, 0, 120)}} (...)
                 </p>
-                <a href="{{route('imovel.show',['id'=> $imovel->id])}}" class="btn btn-primary">Saiba mais</a>
+                <a href="{{route('imovel.detalhes',['id'=> $imovel->id])}}" class="btn btn-primary">Saiba mais</a>
             </div>
 
         </div>

@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 class ImovelController extends Controller
 {
 
-    protected $totalPage = 1;
+    protected $totalPage = 6;
 
     public function index()
     {
@@ -33,13 +33,32 @@ class ImovelController extends Controller
 
         $address = urlencode($request->cep);
 
-        $url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key;
+        $url = 'https://viacep.com.br/ws/'.$address.'/json/';
+
+        //$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key;
+        //consultando endereço
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         $res = curl_exec($ch);
         curl_close($ch);
         $endereco = json_decode($res, true);
+
+
+        if(isset($endereco['erro']) || $endereco == null)
+            return back();
+
+        //consultando coordenadas
+
+        $urlGoogle = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$endereco['cep'].'&key='.$key;
+        //consultando endereço
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $urlGoogle);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        $googleMaps = json_decode($res, true);
+
 
        $data = $request->all();
 
@@ -56,12 +75,12 @@ class ImovelController extends Controller
         $imovel = Imovel::create([
             'titulo' => $data['titulo'],
             'foto' => $data['foto'],
-            'endereco' => $endereco['results'][0]['address_components'][1]['long_name'],
+            'endereco' => $endereco['logradouro'],
             'cep' => $data['cep'],
-            'cidade' => $endereco['results'][0]['address_components'][3]['long_name'],
-            'estado' => $endereco['results'][0]['address_components'][4]['long_name'],
-            'latitude' => $endereco['results'][0]['geometry']['location']['lat'],
-            'longitude' => $endereco['results'][0]['geometry']['location']['lng'],
+            'cidade' => $endereco['localidade'],
+            'estado' => $endereco['uf'],
+            'latitude' => $googleMaps['results'][0]['geometry']['location']['lat'],
+            'longitude' => $googleMaps['results'][0]['geometry']['location']['lng'],
             'descricao' => $data['descricao'],
             'valor' => $data['valor']
         ]);
@@ -122,8 +141,13 @@ class ImovelController extends Controller
 
         if($data['cep'] != $imovel->cep){
             $key = env('MAPS_KEY', null);
+
             $address = urlencode($request->cep);
-            $url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key;
+
+            $url = 'https://viacep.com.br/ws/'.$address.'/json/';
+
+            //$url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key;
+            //consultando endereço
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -131,15 +155,30 @@ class ImovelController extends Controller
             curl_close($ch);
             $endereco = json_decode($res, true);
 
-            $imovel->update([
+
+            if(isset($endereco['erro']) || $endereco == null)
+                return back();
+
+            //consultando coordenadas
+
+            $urlGoogle = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$endereco['cep'].'&key='.$key;
+            //consultando endereço
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $urlGoogle);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $res = curl_exec($ch);
+            curl_close($ch);
+            $googleMaps = json_decode($res, true);
+
+            $dados = $imovel->update([
                 'titulo' => $data['titulo'],
                 'foto' => $data['foto'],
-                'endereco' => $endereco['results'][0]['address_components'][1]['long_name'],
+                'endereco' => $endereco['logradouro'],
                 'cep' => $data['cep'],
-                'cidade' => $endereco['results'][0]['address_components'][3]['long_name'],
-                'estado' => $endereco['results'][0]['address_components'][4]['long_name'],
-                'latitude' => $endereco['results'][0]['geometry']['location']['lat'],
-                'longitude' => $endereco['results'][0]['geometry']['location']['lng'],
+                'cidade' => $endereco['localidade'],
+                'estado' => $endereco['uf'],
+                'latitude' => $googleMaps['results'][0]['geometry']['location']['lat'],
+                'longitude' => $googleMaps['results'][0]['geometry']['location']['lng'],
                 'descricao' => $data['descricao'],
                 'valor' => $data['valor']
             ]);

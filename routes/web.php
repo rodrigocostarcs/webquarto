@@ -31,10 +31,12 @@ Route::middleware(['auth'])->group(function(){
 });
 
 Route::get('/localizar',[SiteController::class,'index'])->name('imovel.procurar');
+Route::get('/localizar/detalhes/{id}',[SiteController::class,'detalhes'])->name('imovel.detalhes');
+Route::any('/localizar/pesquisar',[SiteController::class,'search'])->name('localizar.search');
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
