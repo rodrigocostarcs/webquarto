@@ -21,6 +21,8 @@ class CreateImovelsTable extends Migration
             $table->string('cep');
             $table->string('cidade');
             $table->string('estado');
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->text('descricao');
             $table->double('valor', 15,8)->default(0.0);
             $table->enum('status', array('d', 'a'))->default('d');/*d = disponível e a = alugado*/

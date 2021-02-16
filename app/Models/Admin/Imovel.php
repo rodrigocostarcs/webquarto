@@ -9,5 +9,5 @@ class Imovel extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['titulo','foto','endereco','cep','cidade','estado','descricao','valor','status'];
+    protected $fillable = ['titulo','foto','endereco','cep','cidade','estado','descricao','valor','status','latitude','longitude'];
 }

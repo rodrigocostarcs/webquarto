@@ -45,21 +45,7 @@
         value="{{$imovel->titulo ?? old('titulo') }}">
         <div id="emailHelp" class="form-text">Digite o título para o ímovel.</div>
     </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Digite o endereço</label>
-        <input type="text" class="form-control" name="endereco" id="exampleInputPassword1"
-        value="{{$imovel->endereco  ?? old('endereco')}}">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Digite a cidade</label>
-        <input type="text" class="form-control" name="cidade" id="exampleInputPassword1"
-        value="{{$imovel->cidade  ?? old('cidade')}}">
-    </div>
-    <div class="mb-3">
-        <label for="exampleInputPassword1" class="form-label">Digite o estado</label>
-        <input type="text" class="form-control" name="estado" id="exampleInputPassword1"
-        value="{{$imovel->estado  ?? old('estado')}}">
-    </div>
+
     <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Digite o CEP</label>
         <input type="text" class="form-control" name="cep" id="exampleInputPassword1"

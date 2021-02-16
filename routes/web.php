@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ImovelController;
+use App\Http\Controllers\Site\SiteController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,8 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/imoveis',[ImovelController::class,'index'])->name('imovel.index');
 
 });
+
+Route::get('/localizar',[SiteController::class,'index'])->name('imovel.procurar');
 
 Route::get('/', function () {
     return view('welcome');

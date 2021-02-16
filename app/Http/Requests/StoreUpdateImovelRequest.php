@@ -33,10 +33,7 @@ class StoreUpdateImovelRequest extends FormRequest
 
             'titulo' => 'required|min:3|max:160',
             'descricao' => ['required','min:5','max:10000'],
-            'endereco' => 'required|min:3|max:160',
             'cep' => 'required|integer|min:8',
-            'cidade' => 'required|min:3|max:20',
-            'estado' => 'required|min:2|max:20',
             'valor' => ['required','regex:/^\d+(\.\d{1,2})?$/'],
             'status' => [
                 Rule::in(['d','a'])],
@@ -44,7 +41,7 @@ class StoreUpdateImovelRequest extends FormRequest
         ];
 
         if($this->method() == 'PUT'){
-            $rules['foto'] = ['nullable','image'];
+            $rules['foto'] = ['required','image'];
         }
 
         return $rules;

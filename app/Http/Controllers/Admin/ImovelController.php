@@ -29,6 +29,18 @@ class ImovelController extends Controller
 
     public function store(StoreUpdateImovelRequest $request)
     {
+        $key = env('MAPS_KEY', null);
+
+        $address = urlencode($request->cep);
+
+        $url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        $endereco = json_decode($res, true);
+
        $data = $request->all();
 
        if( $request->file('foto')->isValid()){
@@ -41,7 +53,18 @@ class ImovelController extends Controller
             $data['foto'] = $foto;
        }
 
-        $imovel = Imovel::create($data);
+        $imovel = Imovel::create([
+            'titulo' => $data['titulo'],
+            'foto' => $data['foto'],
+            'endereco' => $endereco['results'][0]['address_components'][1]['long_name'],
+            'cep' => $data['cep'],
+            'cidade' => $endereco['results'][0]['address_components'][3]['long_name'],
+            'estado' => $endereco['results'][0]['address_components'][4]['long_name'],
+            'latitude' => $endereco['results'][0]['geometry']['location']['lat'],
+            'longitude' => $endereco['results'][0]['geometry']['location']['lng'],
+            'descricao' => $data['descricao'],
+            'valor' => $data['valor']
+        ]);
 
         if ($imovel)
             return redirect()->route('imovel.index')->with('message', 'Imóvel cadastrado com sucesso!');
@@ -82,6 +105,7 @@ class ImovelController extends Controller
             return back()->withInput();
         }
 
+
         $data = $request->all();
 
         if($request->file('foto') && $request->file('foto')->isValid()){
@@ -96,11 +120,42 @@ class ImovelController extends Controller
              $data['foto'] = $foto;
         }
 
-        $imovel->update($data);
+        if($data['cep'] != $imovel->cep){
+            $key = env('MAPS_KEY', null);
+            $address = urlencode($request->cep);
+            $url = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address.'&key='.$key;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $res = curl_exec($ch);
+            curl_close($ch);
+            $endereco = json_decode($res, true);
 
-        return redirect()
-            ->route('imovel.index')
-            ->with('message', 'Imóvel atualizado com sucesso!');
+            $imovel->update([
+                'titulo' => $data['titulo'],
+                'foto' => $data['foto'],
+                'endereco' => $endereco['results'][0]['address_components'][1]['long_name'],
+                'cep' => $data['cep'],
+                'cidade' => $endereco['results'][0]['address_components'][3]['long_name'],
+                'estado' => $endereco['results'][0]['address_components'][4]['long_name'],
+                'latitude' => $endereco['results'][0]['geometry']['location']['lat'],
+                'longitude' => $endereco['results'][0]['geometry']['location']['lng'],
+                'descricao' => $data['descricao'],
+                'valor' => $data['valor']
+            ]);
+
+            return redirect()
+                ->route('imovel.index')
+                ->with('message', 'Imóvel atualizado com sucesso!');
+        }else{
+
+            $imovel->update($data);
+
+            return redirect()
+                ->route('imovel.index')
+                ->with('message', 'Imóvel atualizado com sucesso!');
+        }
+
     }
 
     public function destroy($id)
